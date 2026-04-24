@@ -1,0 +1,274 @@
+/* ================================
+   index.css — Anime Quotes
+   ================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f4f4f0;
+  --surface: #ffffff;
+  --border: #dedед8;
+  --accent: #c0392b;
+  --accent-bg: #fdf0ef;
+  --text: #1a1a1a;
+  --muted: #777;
+  --radius: 8px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── App shell ── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+/* ================================
+   HEADER
+   ================================ */
+.header {
+  background: var(--surface);
+  border-bottom: 3px solid var(--accent);
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.header-sub {
+  font-size: .85rem;
+  color: var(--muted);
+  margin-top: .2rem;
+}
+
+/* ================================
+   FORMULÁRIO
+   ================================ */
+.search-section {
+  margin-bottom: 2rem;
+}
+
+.search-form {
+  background: var(--surface);
+  border: 1px solid #e0e0d8;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.field-label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.field-input {
+  border: 1px solid #e0e0d8;
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: .95rem;
+  padding: .55rem .85rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.field-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, .1);
+}
+
+.field-input::placeholder {
+  color: #bbb;
+}
+
+.form-error {
+  font-size: .85rem;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-left: 3px solid var(--accent);
+  padding: .45rem .75rem;
+  border-radius: 5px;
+}
+
+.btn-buscar {
+  align-self: flex-start;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: .95rem;
+  font-weight: 600;
+  padding: .55rem 1.4rem;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+
+.btn-buscar:hover {
+  opacity: .88;
+}
+
+.btn-buscar:active {
+  transform: scale(.97);
+}
+
+/* ================================
+   STATUS (loading / erro)
+   ================================ */
+.status-msg {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+.status-msg.error {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: .75rem 1rem;
+  text-align: left;
+}
+
+/* ================================
+   LISTA DE QUOTES
+   ================================ */
+.quote-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quote-count {
+  font-size: .82rem;
+  color: var(--muted);
+  margin-bottom: .25rem;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: .9rem;
+}
+
+/* ================================
+   CARD
+   ================================ */
+.quote-card {
+  background: var(--surface);
+  border: 1px solid #e0e0d8;
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  animation: fadeUp .3s ease both;
+  transition: box-shadow .15s, border-color .15s;
+}
+
+.quote-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .1);
+  border-color: #c8c8c0;
+}
+
+.quote-text {
+  font-style: italic;
+  font-size: .93rem;
+  line-height: 1.65;
+  color: #222;
+}
+
+.quote-meta {
+  font-size: .8rem;
+  color: var(--muted);
+  border-top: 1px solid #ebebeb;
+  padding-top: .5rem;
+}
+
+/* ================================
+   FOOTER
+   ================================ */
+.footer {
+  text-align: center;
+  padding: .9rem;
+  font-size: .78rem;
+  color: var(--muted);
+  border-top: 1px solid #e0e0d8;
+  background: var(--surface);
+}
+
+/* ================================
+   ANIMAÇÃO
+   ================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   RESPONSIVIDADE
+   ================================ */
+@media (max-width: 480px) {
+  .search-form {
+    padding: 1.1rem;
+  }
+
+  .quote-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-buscar {
+    width: 100%;
+    text-align: center;
+  }
+}
