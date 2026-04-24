@@ -14,7 +14,7 @@ const initialState = {
 function reducer(state, action) {
     switch (action.type) {
         case "FETCH_START":
-            return { ...state, loading: true, error: null, quotes: [] };
+            return { ...state, loading: true, error: null, quotes: [], searched: true };
 
         case "FETCH_SUCCESS":
             return { ...state, loading: false, quotes: action.payload };
@@ -64,9 +64,12 @@ export const QuoteProvider = ({ children }) => {
             dispatch({ type: "FETCH_ERROR", payload: err.message });
         }
     };
-
+    
+    const clearResults = () => {
+        dispatch({ type: "CLEAR_RESULTS" });
+    };
     return (
-        <QuoteContext.Provider value={{ state, fetchByAnime, fetchByCharacter }}>
+        <QuoteContext.Provider value={{ state, fetchByAnime, fetchByCharacter, clearResults }}>
             {children}
         </QuoteContext.Provider>
     );
