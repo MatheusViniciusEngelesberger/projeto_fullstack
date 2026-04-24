@@ -8,7 +8,7 @@ const SearchForm = () => {
     formState: { errors },
   } = useForm();
 
-  const { fetchByAnime, fetchByCharacter } = useQuote();
+  const { fetchByAnime, fetchByCharacter, clearResults, state } = useQuote();
 
   const onSubmit = (data) => {
     const { anime, character } = data;
@@ -57,7 +57,22 @@ const SearchForm = () => {
         </p>
       )}
 
+      {state.error && (
+        <p className="error-msg api-error" role="alert">
+          ✖ {state.error}
+        </p>
+      )}
+
       <button type="submit">Buscar</button>
+
+      {state.searched && (
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleClear}
+        >Limpar
+        </button>
+      )}
     </form>
   );
 };
