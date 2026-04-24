@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useQuote } from "../contexts/QuoteContext";
 
 const SearchForm = () => {
   const {
@@ -7,10 +8,17 @@ const SearchForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const { fetchByAnime, fetchByCharacter } = useQuote();
 
+  const onSubmit = (data) => {
+    const { anime, character } = data;
+
+    if (anime) {
+      fetchByAnime(anime);
+    } else {
+      fetchByCharacter(character);
+    }
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
