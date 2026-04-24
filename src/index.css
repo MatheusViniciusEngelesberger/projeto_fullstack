@@ -145,11 +145,33 @@ body {
   transition: opacity .15s, transform .1s;
 }
 
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #e0e0d8;
+  border-radius: 8px;
+  color: #777770;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .5rem 1.1rem;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+
 .btn-buscar:hover {
   opacity: .88;
 }
 
+.btn-secondary:hover {
+  border-color: #aaa;
+  color: #1a1a1a;
+}
+
 .btn-buscar:active {
+  transform: scale(.97);
+}
+
+.btn-secondary:active {
   transform: scale(.97);
 }
 

@@ -20,16 +20,17 @@ const QuoteList = () => {
     return <p>{state.error}</p>;
   }
   if (state.quotes.length === 0) {
+    return(
     <section className="results-section empty-state">
-      <div className="empty-icon">🔍</div>
       <p className="empty-text">Nenhuma frase encontrada.</p>
     </section>
+    )
   }
 
   return (
     <section className="results-section">
       <p className="results-count">
-        {quotes.length} frase{quotes.length !== 1 ? 's' : ''} encontrada{quotes.length !== 1 ? 's' : ''}
+        {state.quotes.length} frase{state.quotes.length !== 1 ? 's' : ''} encontrada{state.quotes.length !== 1 ? 's' : ''}
       </p>
       <div className="quote-grid">
         {state.quotes.map((quote, index) => (

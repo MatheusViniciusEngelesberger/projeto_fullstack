@@ -19,6 +19,10 @@ const SearchForm = () => {
       fetchByCharacter(character);
     }
   };
+
+  function handleClear() {
+    clearResults();
+  }
   return (
     <section className="search-section">
       <form className="search-form" onSubmit={handleSubmit(onSubmit)}>
