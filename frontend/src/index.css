@@ -168,11 +168,11 @@ body {
 }
 
 .btn-buscar:active {
-  transform: scale(.97);
+  /*transform: scale(.97);
 }
 
 .btn-secondary:active {
-  transform: scale(.97);
+ /* transform: scale(.97);*/
 }
 
 /* ================================
@@ -292,5 +292,71 @@ body {
   .btn-buscar {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* ================================
+   LOGIN
+   ================================ */
+.login-form {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.login-heading {
+  margin-bottom: .25rem;
+}
+
+.login-heading h2 {
+  font-size: 1.35rem;
+  color: var(--text);
+}
+
+.login-heading p {
+  font-size: .9rem;
+  color: var(--muted);
+  margin-top: .15rem;
+}
+
+.btn-login:active {
+  transform: none;
+}
+
+/* ================================
+   HEADER COM BOTÃO SAIR
+   ================================ */
+.header {
+  position: relative;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.header-logout {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-logout:active {
+  transform: translateY(-50%) scale(.97);
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding-bottom: 4rem;
+  }
+
+  .header-logout {
+    right: 50%;
+    top: auto;
+    bottom: 1rem;
+    transform: translateX(50%);
+  }
+
+  .header-logout:active {
+    transform: translateX(50%) scale(.97);
   }
 }
