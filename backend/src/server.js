@@ -11,6 +11,7 @@ require("dotenv").config({
 const connectDatabase = require("./config/database");
 
 const authRoutes = require("./routes/authRoutes");
+const quoteRoutes = require("./routes/quoteRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/quotes", quoteRoutes);
 
 const PORT = process.env.PORT || 3001;
 
