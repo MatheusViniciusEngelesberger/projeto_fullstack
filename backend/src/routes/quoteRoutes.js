@@ -9,8 +9,8 @@ const Log = require("../models/Log");
 const router = express.Router();
 
 const cache = new NodeCache({
-  stdTTL: 60,
-  checkperiod: 120
+  stdTTL: 3600,
+  checkperiod: 600
 });
 
 function authMiddleware(req, res, next) {
@@ -51,6 +51,52 @@ function authMiddleware(req, res, next) {
   }
 }
 
+async function searchAnimeChan({ anime, character }) {
+  try {
+    const params = new URLSearchParams();
+
+    if (anime) {
+      params.append("anime", anime);
+    } else if (character) {
+      params.append("character", character);
+    }
+
+    const url = `https://api.animechan.io/v1/quotes/?${params.toString()}`;
+
+    const response = await fetch(url);
+    const text = await response.text();
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        console.error("Limite da AnimeChan atingido. Tente novamente depois de 1 hora.");
+      } else {
+        console.error("Erro na AnimeChan:", response.status, text);
+      }
+
+      return [];
+    }
+
+    const result = JSON.parse(text);
+
+    const data = Array.isArray(result)
+      ? result
+      : Array.isArray(result.data)
+        ? result.data
+        : [];
+
+    return data.map((item, index) => ({
+      id: item.id ? `animechan-${item.id}` : `animechan-${index}`,
+      anime: item.anime?.name || item.anime || "",
+      characterName: item.character?.name || item.character || "",
+      quote: item.content || item.quote || "",
+      source: "animechan"
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar na AnimeChan:", error.message);
+    return [];
+  }
+}
+
 router.get(
   "/",
   authMiddleware,
@@ -86,20 +132,16 @@ router.get(
 
       const cacheKey = `quotes:${anime || ""}:${character || ""}`;
 
-      const cachedQuotes = cache.get(cacheKey);
+      const cachedResult = cache.get(cacheKey);
 
-      if (cachedQuotes) {
+      if (cachedResult) {
         await Log.create({
           action: "SEARCH_CACHE",
           description: `Busca em cache. Anime: ${anime || "-"} | Personagem: ${character || "-"}`,
           userId: req.user.id
         });
 
-        return res.json({
-          source: "cache",
-          total: cachedQuotes.length,
-          data: cachedQuotes
-        });
+        return res.json(cachedResult);
       }
 
       const filters = [];
@@ -133,22 +175,32 @@ router.get(
         anime: item.anime,
         characterName: item.characterName,
         quote: item.quote,
+        source: "mongodb",
         createdAt: item.createdAt
       }));
 
-      cache.set(cacheKey, formattedQuotes);
+      const animeChanQuotes = await searchAnimeChan({
+        anime,
+        character
+      });
+
+      const result = {
+        source: "mongodb_animechan",
+        total: formattedQuotes.length + animeChanQuotes.length,
+        mongodbTotal: formattedQuotes.length,
+        animeChanTotal: animeChanQuotes.length,
+        data: [...formattedQuotes, ...animeChanQuotes]
+      };
+
+      cache.set(cacheKey, result);
 
       await Log.create({
         action: "SEARCH",
-        description: `Busca realizada. Anime: ${anime || "-"} | Personagem: ${character || "-"}`,
+        description: `Busca realizada no MongoDB e AnimeChan. Anime: ${anime || "-"} | Personagem: ${character || "-"}`,
         userId: req.user.id
       });
 
-      return res.json({
-        source: "database",
-        total: formattedQuotes.length,
-        data: formattedQuotes
-      });
+      return res.json(result);
     } catch (error) {
       console.error("Erro na busca:", error);
 
@@ -215,6 +267,7 @@ router.post(
           anime: createdQuote.anime,
           characterName: createdQuote.characterName,
           quote: createdQuote.quote,
+          source: "mongodb",
           createdAt: createdQuote.createdAt
         }
       });
