@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-require("dotenv").config();
+const path = require("path");
+
+require("dotenv").config({
+  path: path.resolve(__dirname, "../../.env")
+});
 
 const User = require("../models/User");
 
@@ -20,7 +24,6 @@ async function connectDatabase() {
 }
 
 async function createInitialData() {
-
   const adminExists = await User.findOne({
     email: "admin@email.com"
   });
@@ -37,6 +40,5 @@ async function createInitialData() {
     console.log("Usuário padrão criado: admin@email.com / 123456");
   }
 }
-
 
 module.exports = connectDatabase;

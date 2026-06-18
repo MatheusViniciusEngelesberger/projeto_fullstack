@@ -2,9 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const compression = require("compression");
-require("dotenv").config();
+const path = require("path");
+
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env")
+});
 
 const connectDatabase = require("./config/database");
+
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -23,9 +29,11 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({
-    message: "API do Projeto 2 rodando com MongoDB."
+    message: "Backend do Projeto 2 rodando."
   });
 });
+
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3001;
 
