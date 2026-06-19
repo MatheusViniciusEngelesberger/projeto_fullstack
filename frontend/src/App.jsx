@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import SearchForm from "./components/SearchForm";
 import QuoteList from "./components/QuoteList";
 import Login from "./components/Login";
+import InsertQuoteForm from "./components/InsertQuoteForm";
 import { QuoteProvider } from "./contexts/QuoteContext";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { useAuth } from "./contexts/useAuth";
@@ -20,6 +21,7 @@ function AppContent() {
 
         <main className="main">
           <SearchForm />
+          <InsertQuoteForm />
           <QuoteList />
         </main>
 

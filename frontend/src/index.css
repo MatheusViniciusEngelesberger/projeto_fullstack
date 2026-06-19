@@ -360,3 +360,39 @@ body {
     transform: translateX(50%) scale(.97);
   }
 }
+
+/* ================================
+   INSERÇÃO DE QUOTES
+   ================================ */
+.insert-section {
+  margin-bottom: 2rem;
+}
+
+.insert-heading {
+  margin-bottom: .25rem;
+}
+
+.insert-heading h2 {
+  font-size: 1.15rem;
+  color: var(--text);
+}
+
+.insert-heading p {
+  font-size: .88rem;
+  color: var(--muted);
+  margin-top: .15rem;
+}
+
+.quote-textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+.form-success {
+  font-size: .85rem;
+  color: #2e7d32;
+  background: #eef8ef;
+  border-left: 3px solid #2e7d32;
+  padding: .45rem .75rem;
+  border-radius: 5px;
+}
