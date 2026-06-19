@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 
-const BASE_URL = 'https://api.animechan.io/v1'
+const BASE_URL = "http://localhost:3001/api";
 
 const QuoteContext = createContext();
 
@@ -21,8 +21,10 @@ function reducer(state, action) {
 
         case "FETCH_ERROR":
             return { ...state, loading: false, error: action.payload, quotes: [] };
+
         case "CLEAR_RESULTS":
-            return { ...initialState }
+            return { ...initialState };
+
         default:
             return state;
     }
@@ -35,14 +37,30 @@ export const QuoteProvider = ({ children }) => {
         dispatch({ type: "FETCH_START" });
 
         try {
+            const token = localStorage.getItem("token");
+
             const res = await fetch(
-                `${BASE_URL}/quotes?anime=${encodeURIComponent(anime)}`
+                `${BASE_URL}/quotes?anime=${encodeURIComponent(anime)}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
-            if (!res.ok) throw new Error(`Erro HTTP ${res.status}`)
+
             const data = await res.json();
-            const result = data.data || data;
-            if (result.length === 0) throw new Error('Nenhuma frase encontrada para este anime.')
-            dispatch({ type: "FETCH_SUCCESS", payload: data.data || data });
+
+            if (!res.ok) {
+                throw new Error(data.error || `Erro HTTP ${res.status}`);
+            }
+
+            const result = data.data || [];
+
+            if (result.length === 0) {
+                throw new Error("Nenhuma frase encontrada para este anime.");
+            }
+
+            dispatch({ type: "FETCH_SUCCESS", payload: result });
         } catch (err) {
             dispatch({ type: "FETCH_ERROR", payload: err.message });
         }
@@ -52,22 +70,39 @@ export const QuoteProvider = ({ children }) => {
         dispatch({ type: "FETCH_START" });
 
         try {
+            const token = localStorage.getItem("token");
+
             const res = await fetch(
-                `${BASE_URL}/quotes?character=${encodeURIComponent(character)}`
+                `${BASE_URL}/quotes?character=${encodeURIComponent(character)}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
-            if (!res.ok) throw new Error(`Erro HTTP ${res.status}`)
+
             const data = await res.json();
-            const result = data.data || data;
-            if (result.length === 0) throw new Error('Nenhuma frase encontrada para este personagem.')
-            dispatch({ type: "FETCH_SUCCESS", payload: data.data || data });
+
+            if (!res.ok) {
+                throw new Error(data.error || `Erro HTTP ${res.status}`);
+            }
+
+            const result = data.data || [];
+
+            if (result.length === 0) {
+                throw new Error("Nenhuma frase encontrada para este personagem.");
+            }
+
+            dispatch({ type: "FETCH_SUCCESS", payload: result });
         } catch (err) {
             dispatch({ type: "FETCH_ERROR", payload: err.message });
         }
     };
-    
+
     const clearResults = () => {
         dispatch({ type: "CLEAR_RESULTS" });
     };
+
     return (
         <QuoteContext.Provider value={{ state, fetchByAnime, fetchByCharacter, clearResults }}>
             {children}
